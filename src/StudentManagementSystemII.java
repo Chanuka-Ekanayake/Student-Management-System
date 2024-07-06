@@ -2,7 +2,7 @@
 //Author: Chanuka Ekanayake
 //UoW ID: w2083948
 //IIT ID: 20230100
-//Last update: 6-July-2024
+//Last update: 7-July-2024
 
 
 //----------------------------------------------- Coursework Part II ----------------------------------------------
@@ -75,8 +75,7 @@ public class StudentManagementSystemII {
                     studentModuleEvaluator();
                     break;
                 case "0":
-                    String saveData = returnYorN("Do you want to save data before exiting? (Y/N): ");
-                    if(saveData.equals("Y")){
+                    if(returnYorN("Do you want to save data before exiting? (Y/N): ")){
                         saveDetails(file_name);
                     }
                     System.out.println("\nProgram terminated.\nHave a nice day!");
@@ -165,10 +164,9 @@ public class StudentManagementSystemII {
                 System.out.println("Student ID      : " + stID);
                 System.out.println("Registered date : " + date);
 
-                confirmation = returnYorN(("\nConfirm registration (Y/N): "));
 
                 //Saving student details
-                if (confirmation.equals("Y")) {
+                if (returnYorN("\nConfirm registration (Y/N): ")) {
                     student_details[i][0] = stID;
                     student_details[i][1] = studentName;
                     student_details[i][2] = date;
@@ -182,9 +180,7 @@ public class StudentManagementSystemII {
 
         if(Registered){
 
-            String choice = returnYorN("Do you want to register another student (Y/N): ");
-
-            if (choice.equals("Y")) {
+            if (returnYorN("Do you want to register another student (Y/N): ")) {
                 Register();
             }
             else {
@@ -246,9 +242,8 @@ public class StudentManagementSystemII {
 
         displayDetails(stIndex, student_details); //Display details of the student before delete
 
-        String delete = returnYorN("Confirm deleting the student with above details (Y/N): ");
 
-        if (delete.equals("Y")) {
+        if (returnYorN("Confirm deleting the student with above details (Y/N): ")) {
             student_details[stIndex][0] = "-";
             student_details[stIndex][1] = "-";
             student_details[stIndex][2] = "-";
@@ -260,9 +255,7 @@ public class StudentManagementSystemII {
         }
 
 
-        String choice = returnYorN("Do you want to delete another Student? (Y/N): ");
-
-        if (choice.equals("Y")) {
+        if (returnYorN("Do you want to delete another Student? (Y/N): ")) {
             deleteStudent();
         } else{
             System.out.println("Returning to main menu...\n");
@@ -313,10 +306,7 @@ public class StudentManagementSystemII {
             }
         }
 
-
-        String choice = returnYorN("Do you want to Find another Student? (Y/N): ");
-
-        if (choice.equals("Y")){
+        if (returnYorN("Do you want to Find another Student? (Y/N): ")){
             findStudent();
         } else {
             System.out.println("Returning to main menu...\n");
@@ -350,9 +340,8 @@ public class StudentManagementSystemII {
         String saveFile;
         System.out.println("The default saving file is : "+fileName);
 
-        String choice = returnYorN("Do you want to change the default file? (Y/N): ");
 
-        if(choice.equals("N")){
+        if(!returnYorN("Do you want to change the default file? (Y/N): ")){
             saveFile = fileName;
         }else {
             saveFile = returnInput("Enter/Create file name with file type (Ex: New File.txt): ");
@@ -362,9 +351,8 @@ public class StudentManagementSystemII {
 
         if(!file.exists()){
             System.out.println("The File: "+file.getName()+"does not exist.");
-            String createNew = returnYorN("Do you want to create a new file names "+file.getName()+"? (Y/N): ");
 
-            if(createNew.equals("Y")){
+            if(returnYorN("Do you want to create a new file names "+file.getName()+"? (Y/N): ")){
                 try {
                     boolean newFile = file.createNewFile();
                     if (newFile) {
@@ -403,9 +391,8 @@ public class StudentManagementSystemII {
         System.out.println("\nWarning: Saving System data will delete the current data in the file and overwrite System data");
         System.out.println("If the file contains unloaded system data please import file data first before saving !\n");
 
-        String confirmation = returnYorN("Confirm saving system data to the file (Y/N): ");
 
-        if(confirmation.equals("N")){
+        if(!returnYorN("Confirm saving system data to the file (Y/N): ")){
             System.out.println("\nReturning to Main menu...\n");
             return;
         }
@@ -452,9 +439,7 @@ public class StudentManagementSystemII {
         String saveFile;
         System.out.println("The default file to load data is: "+fileName);
 
-        String choice = returnYorN("Do you want to change the loading file? (Y/N): ");
-
-        if(choice.equals("Y")){
+        if(returnYorN("Do you want to change the loading file? (Y/N): ")){
             saveFile = returnInput("Enter File name with file type (Ex: New File.txt): ");
         }else {
             saveFile = fileName;
@@ -471,8 +456,7 @@ public class StudentManagementSystemII {
             System.out.println("The file you entered was unable to read. Please enter a .txt file\n");
             loadDetails(fileName);
         } else{
-            String confirmation = returnYorN("Please confirm uploading data in file \""+file.getName()+"\" (Y/N): ");
-            if(confirmation.equals("N")){
+            if(!returnYorN("Please confirm uploading data in file \""+file.getName()+"\" (Y/N): ")){
                 System.out.println("Returning to Main menu...\n");
                 return;
             } else {
@@ -668,7 +652,8 @@ public class StudentManagementSystemII {
     // ----------------> CHOICE 1
     public static void addStudent_moduleEvaluator(){
         /*
-
+            Add a student to the module evaluator. Only the students who have been registered initially can be added
+            to the Student module evaluator.
          */
 
         System.out.println("\n--- Add Student for the  Module Evaluator ---\n");
@@ -684,9 +669,8 @@ public class StudentManagementSystemII {
                 if (stIndex == -1) {
                     System.out.println("\nSorry! There is no student registered on ID " + stID);
                     System.out.println("Only registered students can be added to the Module evaluator\n");
-                    String checkDetails = returnYorN("Do you want to check registered Student details? (Y/N): ");
 
-                    if (checkDetails.equals("Y")) {
+                    if (returnYorN("Do you want to check registered Student details? (Y/N): ")) {
                         viewByNames();
                     } else {
                         System.out.println("Returning to Module Evaluator menu...\n");
@@ -712,9 +696,8 @@ public class StudentManagementSystemII {
                     displayDetails(stIndex, student_details);
                 }
 
-                String confirmation = returnYorN("Confirm adding student with above details to the evaluator (Y/N): ");
 
-                if(confirmation.equals("Y")){
+                if(returnYorN("Confirm adding student with above details to the evaluator (Y/N): ")){
                     stModule_evaluator[i].setStID(stID);
                     stModule_evaluator[i].setStName(student_details[stIndex][1]+" "+student_details[stIndex][2]);
 
@@ -724,9 +707,7 @@ public class StudentManagementSystemII {
                     return;
                 }
 
-                String addAnotherSt = returnYorN("Do you want to add another student? (Y/N): ");
-
-                if(addAnotherSt.equals("Y")){
+                if(returnYorN("Do you want to add another student? (Y/N): ")){
                     addStudent_moduleEvaluator();
                 } else {
                     System.out.println("Returning to Module Evaluator menu...\n");
@@ -740,7 +721,8 @@ public class StudentManagementSystemII {
     // ----------------> CHOICE 2
     public static void addMarks_moduleEvaluator(){
         /*
-
+            Add marks to the student with relevant ID which already has been registered on the
+            Module Evaluator
          */
         System.out.println("\n--- Add Student Marks for the  Module Evaluator ---\n");
 
@@ -772,9 +754,8 @@ public class StudentManagementSystemII {
             System.out.println("Please check again !\n");
         }
 
-        String returnBack = returnYorN("Do you want to add marks for another student? (Y/N): ");
-        if(returnBack.equals("Y")){
-            addStudent_moduleEvaluator();
+        if(returnYorN("Do you want to add marks for another student? (Y/N): ")){
+            addMarks_moduleEvaluator();
         }else {
             System.out.println("Returning to Module Evaluator menu...\n");
         }
@@ -799,8 +780,7 @@ public class StudentManagementSystemII {
             System.out.println("Please check again !\n");
         }
 
-        String returnBack = returnYorN("Do you want to check details of another student? (Y/N): ");
-        if(returnBack.equals("Y")){
+        if(returnYorN("Do you want to check details of another student? (Y/N): ")){
             checkDetails();
         }else {
             System.out.println("Returning to Module Evaluator menu...\n");
@@ -883,9 +863,9 @@ public class StudentManagementSystemII {
             }
             else{
                 System.out.println("Invalid ID !. Please enter the 8 digit student ID  starts with \"w\" or \"0\" to exit\n");
-                String choice = returnYorN("Do you want to check the student details (Y/N): ");
 
-                if(choice.equals("Y")){
+
+                if(returnYorN("Do you want to check the student details (Y/N): ")){
                     viewByNames();
                 }
             }
@@ -938,7 +918,7 @@ public class StudentManagementSystemII {
 
     }
 
-    public static String returnYorN(String prompt){
+    public static boolean returnYorN(String prompt){
         /*
         Method to minimize the lines of code on questions which expecting Y or N as the
         input from the user
@@ -957,9 +937,9 @@ public class StudentManagementSystemII {
             System.out.print(prompt);
             choice = input.nextLine().trim();
             if(choice.equalsIgnoreCase("Y")){
-                return "Y";
+                return true;
             } else if (choice.equalsIgnoreCase("N")) {
-                return "N";
+                return false;
             }else {
                 System.out.println("Please enter \"Y\" or \"N\"");
             }
@@ -994,7 +974,10 @@ public class StudentManagementSystemII {
 
     public static void initializeModuleEvaluator(Student[] array){
         /*
+            Initializing the student name and ID of the array consisting Student for calculations
 
+            Arguments:
+                array (Student): Array containing student objects
          */
 
         for (int i = 0; i < array.length; i++) {
