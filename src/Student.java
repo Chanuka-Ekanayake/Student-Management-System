@@ -5,7 +5,7 @@ public class Student {
 
     private String stID;
     private String stName;
-    private Module moduleMarks;
+    private final Module moduleMarks = new Module(-1,-1,-1);
 
     public Student (String stName, String stID){
         this.stID = stID;
@@ -18,7 +18,9 @@ public class Student {
         float marks2 = returnValidMarks("Enter Marks of Module 2: ");
         float marks3 = returnValidMarks("Enter Marks of Module 3: ");
 
-        this.moduleMarks = new Module(marks1, marks2, marks3);
+        this.moduleMarks.setMarks1(marks1);
+        this.moduleMarks.setMarks2(marks2);
+        this.moduleMarks.setMarks3(marks3);
 
         System.out.println("\nMarks have been added successfully !\n");
     }
@@ -35,6 +37,15 @@ public class Student {
         System.out.println("Grade          : "+this.moduleMarks.getGrade());
     }
 
+    public boolean checkEmptyMarks(){
+        if(this.moduleMarks.getMarks1() == -1 && this.moduleMarks.getMarks2() == -1 && this.moduleMarks.getMarks3() == -1){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+
 
     private float returnValidMarks(String prompt){
 
@@ -45,7 +56,7 @@ public class Student {
             try {
                 System.out.print(prompt);
                 value =  input.nextFloat();
-                if(value < 0 || value > 100){
+                if(value >= 0 || value <= 100){
                     return value;
                 } else {
                     System.out.println("Invalid Marks !. Marks should be in range 0-100\n ");
@@ -60,6 +71,7 @@ public class Student {
         }
     }
 
+//------------- Getters and Setters ------------------
     public String getStID() {
         return stID;
     }
