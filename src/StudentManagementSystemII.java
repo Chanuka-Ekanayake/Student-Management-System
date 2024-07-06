@@ -621,6 +621,8 @@ public class StudentManagementSystemII {
             System.out.println("3. Get Summary report");
             System.out.println("4. Get Complete report");
             System.out.println("5. Check details of a student");
+            System.out.println("6. Save Module Evaluation data ");
+            System.out.println("7. Load Module Evaluation data ");
             System.out.println("0. Exit to Main menu\n");
 
             choice = returnInput("Enter choice: ");
@@ -645,6 +647,7 @@ public class StudentManagementSystemII {
                     saveData_moduleEvaluator("Module data.txt");
                     break;
                 case "7":
+                    loadData_moduleEvaluator("Module data.txt");
                     break;
                 case "0":
                     System.out.println("Returning to Main menu...\n");
@@ -703,7 +706,7 @@ public class StudentManagementSystemII {
                     }
 
 
-                    displayDetails(stIndex, student_details);
+                    displayDetails(stIndex, student_details); //Display student details to conform before adding
                 }
 
 
@@ -713,9 +716,9 @@ public class StudentManagementSystemII {
 
                     System.out.println("\nStudent details added successfully !\n");
 
-                    if (returnYorN("Do you want to add another student? (Y/N): ")) {
-                        addStudent_moduleEvaluator();
-                    } else {
+                    boolean ReturnMenu = returnYorN("Do you want to add another student? (Y/N): ");
+
+                    if (!ReturnMenu) {
                         System.out.println("Returning to Module Evaluator menu...\n");
                         return;
                     }
