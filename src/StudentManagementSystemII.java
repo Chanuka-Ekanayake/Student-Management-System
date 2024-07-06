@@ -133,7 +133,6 @@ public class StudentManagementSystemII {
         System.out.println("\n--- Register Student ---\n");
 
         boolean Registered = false;
-        String confirmation = "";
 
         for (int i = 0; i < student_details.length; i++) {
             if (student_details[i][0].equals("-")) {
@@ -174,6 +173,8 @@ public class StudentManagementSystemII {
                     System.out.println("Registration Completed\n");
                     Registered = true;
                     break;
+                } else {
+                    System.out.println("Registration Declined !");
                 }
             }
         }
@@ -188,12 +189,7 @@ public class StudentManagementSystemII {
             }
         }
         else{
-            if(confirmation.equals("N")){
-                System.out.println("Registration Declined !");
-            }
-            else {
-                System.out.println("Sorry no space available to register the student !");
-            }
+            System.out.println("Sorry no space available to register the student !");
             System.out.println("Returning to main menu...\n");
         }
     }
@@ -658,8 +654,8 @@ public class StudentManagementSystemII {
 
         System.out.println("\n--- Add Student for the  Module Evaluator ---\n");
 
-        for (int i = 0; i < stModule_evaluator.length ; i++) {
-            if (stModule_evaluator[i].getStName().equals("-") && stModule_evaluator[i].getStID().equals("-")) {
+        for (Student value : stModule_evaluator) {
+            if (value.getStName().equals("-") && value.getStID().equals("-")) {
 
                 String stID = studentID();
 
@@ -679,8 +675,8 @@ public class StudentManagementSystemII {
 
 
                 } else {
-                    for(Student student: stModule_evaluator){
-                        if(student.getStID().equals(stID)){
+                    for (Student student : stModule_evaluator) {
+                        if (student.getStID().equals(stID)) {
                             System.out.println("The student ID you entered was already registered in Module Evaluator ! \n");
 
                             String returnBack = "";
@@ -697,9 +693,9 @@ public class StudentManagementSystemII {
                 }
 
 
-                if(returnYorN("Confirm adding student with above details to the evaluator (Y/N): ")){
-                    stModule_evaluator[i].setStID(stID);
-                    stModule_evaluator[i].setStName(student_details[stIndex][1]+" "+student_details[stIndex][2]);
+                if (returnYorN("Confirm adding student with above details to the evaluator (Y/N): ")) {
+                    value.setStID(stID);
+                    value.setStName(student_details[stIndex][1] + " " + student_details[stIndex][2]);
 
                     System.out.println("\nStudent details added successfully !\n");
                 } else {
@@ -707,7 +703,7 @@ public class StudentManagementSystemII {
                     return;
                 }
 
-                if(returnYorN("Do you want to add another student? (Y/N): ")){
+                if (returnYorN("Do you want to add another student? (Y/N): ")) {
                     addStudent_moduleEvaluator();
                 } else {
                     System.out.println("Returning to Module Evaluator menu...\n");
@@ -730,20 +726,20 @@ public class StudentManagementSystemII {
 
         boolean marksAdded = false;
 
-        for (int i = 0; i < stModule_evaluator.length; i++) {
-            if(stModule_evaluator[i].getStID().equals(stID)){
-                if(!stModule_evaluator[i].checkEmptyMarks()){
-                    System.out.println(stModule_evaluator[i].getStName()+"'s Modules marks have been already added.");
+        for (Student student : stModule_evaluator) {
+            if (student.getStID().equals(stID)) {
+                if (!student.checkEmptyMarks()) {
+                    System.out.println(student.getStName() + "'s Modules marks have been already added.");
                     String changeMarks = returnInput("Do you want to change the marks? (Y/N): ");
-                    if(changeMarks.equals("Y")){
-                        stModule_evaluator[i].EnterStudentMarks();
+                    if (changeMarks.equals("Y")) {
+                        student.EnterStudentMarks();
                         marksAdded = true;
-                    } else{
+                    } else {
                         System.out.println("Returning to Module Evaluator menu...\n");
                         return;
                     }
-                }else {
-                    stModule_evaluator[i].EnterStudentMarks();
+                } else {
+                    student.EnterStudentMarks();
                     marksAdded = true;
                 }
             }
@@ -767,10 +763,10 @@ public class StudentManagementSystemII {
 
         boolean marksAdded = false;
 
-        for (int i = 0; i < stModule_evaluator.length; i++) {
-            if(stModule_evaluator[i].getStID().equals(stID)){
+        for (Student student : stModule_evaluator) {
+            if (student.getStID().equals(stID)) {
 
-                stModule_evaluator[i].displayStudentDetails();
+                student.displayStudentDetails();
                 marksAdded = true;
             }
         }
