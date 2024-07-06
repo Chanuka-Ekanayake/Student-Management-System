@@ -46,7 +46,6 @@ public class Student {
     }
 
 
-
     private float returnValidMarks(String prompt){
 
         Scanner input = new Scanner(System.in);
@@ -86,6 +85,41 @@ public class Student {
 
     public void setStName(String stName) {
         this.stName = stName;
+    }
+
+    public float getMarks1(){
+        return this.moduleMarks.getMarks1();
+    }
+    public float getMarks2(){
+        return this.moduleMarks.getMarks2();
+    }
+
+    public float getMarks3(){
+        return this.moduleMarks.getMarks3();
+    }
+
+    public void setMarks1(float marks1){
+        this.moduleMarks.setMarks1(marks1);
+    }
+
+    public void setMarks2(float marks2) {
+        this.moduleMarks.setMarks1(marks2);
+    }
+
+    public void setMarks3(float marks3) {
+        this.moduleMarks.setMarks1(marks3);
+    }
+
+    public float getAverage(){
+        return this.moduleMarks.getAverage();
+    }
+
+    public String getGrade(){
+        return this.moduleMarks.getGrade();
+    }
+
+    public float getTotal(){
+        return (this.moduleMarks.getMarks1()+this.moduleMarks.getMarks2()+this.moduleMarks.getMarks3());
     }
 
 }

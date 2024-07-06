@@ -5,7 +5,7 @@
 //Last update: 7-July-2024
 
 
-//----------------------------------------------- Coursework Part II ----------------------------------------------
+//----------------------------------------------- Coursework Part III ----------------------------------------------
 
 //Importing Packages
 import java.io.IOException;
@@ -18,7 +18,7 @@ import java.io.FileWriter;
 public class StudentManagementSystemII {
 
     private static  String[][] student_details = new String[100][3];
-    private static final Student [] stModule_evaluator = new Student[100];
+    private static  Student [] stModule_evaluator = new Student[100];
 
 
     public static void main(String[] args) {
@@ -320,6 +320,7 @@ public class StudentManagementSystemII {
 
         System.out.println("\n--- Save Student Data ---\n");
 
+
         //Returning to Main menu if the initial array is empty
         if(emptyDataBase(student_details)){
             System.out.println("Sorry ! No student details in the system to save.");
@@ -617,7 +618,9 @@ public class StudentManagementSystemII {
             //Submenu
             System.out.println("1. Add a student");
             System.out.println("2. Add Module marks of a student");
-            System.out.println("3. Check details of a student");
+            System.out.println("3. Get Summary report");
+            System.out.println("4. Get Complete report");
+            System.out.println("5. Check details of a student");
             System.out.println("0. Exit to Main menu\n");
 
             choice = returnInput("Enter choice: ");
@@ -630,7 +633,18 @@ public class StudentManagementSystemII {
                     addMarks_moduleEvaluator();
                     break;
                 case"3":
+                    summaryReport_moduleEvaluator();
+                    break;
+                case "4":
+                    fullReport_moduleEvaluator();
+                    break;
+                case "5":
                     checkDetails();
+                    break;
+                case "6":
+                    saveData_moduleEvaluator("Module data.txt");
+                    break;
+                case "7":
                     break;
                 case "0":
                     System.out.println("Returning to Main menu...\n");
@@ -695,16 +709,17 @@ public class StudentManagementSystemII {
 
                 if (returnYorN("Confirm adding student with above details to the evaluator (Y/N): ")) {
                     value.setStID(stID);
-                    value.setStName(student_details[stIndex][1] + " " + student_details[stIndex][2]);
+                    value.setStName(student_details[stIndex][1]);
 
                     System.out.println("\nStudent details added successfully !\n");
-                } else {
-                    System.out.println("Returning to Module Evaluator menu...\n");
-                    return;
-                }
 
-                if (returnYorN("Do you want to add another student? (Y/N): ")) {
-                    addStudent_moduleEvaluator();
+                    if (returnYorN("Do you want to add another student? (Y/N): ")) {
+                        addStudent_moduleEvaluator();
+                    } else {
+                        System.out.println("Returning to Module Evaluator menu...\n");
+                        return;
+                    }
+
                 } else {
                     System.out.println("Returning to Module Evaluator menu...\n");
                     return;
@@ -720,6 +735,7 @@ public class StudentManagementSystemII {
             Add marks to the student with relevant ID which already has been registered on the
             Module Evaluator
          */
+
         System.out.println("\n--- Add Student Marks for the  Module Evaluator ---\n");
 
         String stID = studentID();
@@ -757,7 +773,7 @@ public class StudentManagementSystemII {
         }
     }
 
-    // ----------------> CHOICE 3
+    // ----------------> CHOICE 5
     public static void checkDetails(){
         String stID = studentID();
 
@@ -780,9 +796,288 @@ public class StudentManagementSystemII {
             checkDetails();
         }else {
             System.out.println("Returning to Module Evaluator menu...\n");
+            return;
         }
 
     }
+
+    // ----------------> CHOICE 4
+    public static void summaryReport_moduleEvaluator(){
+        System.out.println("\n--- Summary Report of the  Module Evaluator ---\n");
+
+
+        //Check registrations
+        short registeredNo = 0;
+        for(Student student: stModule_evaluator){
+            if(!student.getStID().equals("-")){
+                registeredNo++;
+            }
+        }
+
+        //Check marks
+        short PassStudents = 0;
+        for(Student student:stModule_evaluator){
+            if(student.getMarks1() >= 40 && student.getMarks2() >= 40 && student.getMarks3() >= 40){
+                PassStudents++;
+            }
+        }
+
+        System.out.println("The Total number of Students registered                                 : "+registeredNo);
+        System.out.println("The Total number of Students scored more than 40 marks for every Module : "+PassStudents+"\n");
+
+
+        String returnBack = "";
+        while (!returnBack.equals("0")){
+            returnBack = returnInput("Enter \"0\" to return to Module Evaluator menu: ");
+        }
+    }
+
+
+    // ----------------> CHOICE 5
+    public static void fullReport_moduleEvaluator(){
+        System.out.println("\n--- Full Report of the  Module Evaluator ---\n");
+
+        //sort the module evaluator array - Bubble sort
+        int last_index = stModule_evaluator.length - 1; //To avoid the list out of bound exception
+        Student temp;
+        boolean exchanged = true;
+
+        while (exchanged){
+            exchanged = false;
+            for (int i = 0; i < last_index; i++) {
+                if(stModule_evaluator[i].getAverage() < stModule_evaluator[i+1].getAverage()){
+                    temp = stModule_evaluator[i];
+                    stModule_evaluator[i] = stModule_evaluator[i+1];
+                    stModule_evaluator[i+1] = temp;
+                    exchanged = true;
+                }
+            }
+
+            last_index--;
+
+        }
+
+        //Display full report
+        System.out.println("-Student ID-\t\t-Student Name-\t\t-Module 1 marks-\t-Module 2 marks-\t-Module 3 marks-\t-Total-\t-Average\t\t-Grade-\n");
+        for(Student student: stModule_evaluator) {
+            if (!student.getStName().equals("-")) {
+                System.out.println(student.getStID() + "\t\t" + student.getStName() + "\t\t\t" + student.getMarks1() + "\t\t\t" + student.getMarks2() + "\t\t\t" + student.getMarks3() + "\t\t\t" + student.getTotal() + "\t\t\t" + student.getAverage() + "\t\t\t\t" + student.getGrade());
+            }
+        }
+
+        String returnBack;
+        do{
+            returnBack = returnInput("Enter \"0\" to return to Module Evaluator menu: ");
+        }while (!returnBack.equals("0"));
+    }
+
+
+    // ----------------> CHOICE 5
+    public static void saveData_moduleEvaluator(String fileName){
+        System.out.println("\n--- Save data in Module Evaluator ---\n");
+
+        String saveFile;
+        System.out.println("The default saving file is : "+fileName);
+
+
+        if(!returnYorN("Do you want to change the default file? (Y/N): ")){
+            saveFile = fileName;
+        }else {
+            saveFile = returnInput("Enter/Create file name with file type (Ex: New File.txt): ");
+        }
+
+        File file = new File(saveFile);
+
+        if(!file.exists()){
+            System.out.println("The File: "+file.getName()+"does not exist.");
+
+            if(returnYorN("Do you want to create a new file names "+file.getName()+"? (Y/N): ")){
+                try {
+                    boolean newFile = file.createNewFile();
+                    if (newFile) {
+                        System.out.println(saveFile + " created successfully !");
+
+                        //Checking if the user has entered a .txt file or other file type can not be written
+                        if(!file.canWrite()){
+                            System.out.println(saveFile+" can not be written ! Please enter a .txt file");
+                            saveDetails(fileName);
+                        }
+
+                    } else {
+                        System.out.println("Error! "+saveFile+" did not created !");
+                        System.out.println("Returning to Main menu...\n");
+                        return;
+                    }
+                }catch (IOException e){
+                    System.out.println("Sorry! Request can not be completed due to IO error\nError: "+e.getMessage());
+                    System.out.println("Returning to Main menu...\n");
+                    return;
+
+                }catch (Exception e){
+                    System.out.println("Sorry! Request can not be completed\nError: "+e.getMessage());
+                    System.out.println("Returning to Main menu...\n");
+                    return;
+                }
+            } else {
+                System.out.println("No source file to store data !");
+                System.out.println("Returning to Main menu...\n");
+                return;
+            }
+        }
+
+
+        //User confirmation on saving data
+        System.out.println("\nWarning: Saving System data will delete the current data in the file and overwrite System data");
+        System.out.println("If the file contains unloaded system data please import file data first before saving !\n");
+
+
+        if(!returnYorN("Confirm saving system data to the file (Y/N): ")){
+            System.out.println("\nReturning to Module Evaluation menu...\n");
+            return;
+        }
+
+        try{
+            //Save data to the file
+            FileWriter fileWriter = new FileWriter(file);
+            for(Student student: stModule_evaluator){
+                if(!student.getStID().equals("-")){
+                    fileWriter.write(student.getStID()+"\n");
+                    fileWriter.write(student.getStName()+"\n");
+                    fileWriter.write(student.getMarks1()+"\n");
+                    fileWriter.write(student.getMarks2()+"\n");
+                    fileWriter.write(student.getMarks3()+"\n");
+                }
+            }
+            System.out.println("Student data has been saved successfully !\n");
+            fileWriter.close();
+
+        }catch (IOException e){
+            System.out.println("Sorry request can not be completed due to an IO error\n Error: "+e.getMessage()+"\n");
+        }catch (Exception e){
+            System.out.println("Sorry request can not be completed due to an error\nError: "+e.getMessage()+"\n");
+        }
+
+        while (true){
+            String mainMenu = returnInput("Enter \"0\" to return to Module Evaluation menu: ");
+
+            if(mainMenu.equals("0")){
+                System.out.println("\nRetuning to Module Eain menu...\n");
+                return;
+            }
+        }
+
+    }
+
+
+    public static void loadData_moduleEvaluator(String fileName){
+
+        System.out.println("\n--- Load Module Evaluation Data ---\n");
+
+        //Initialize the source File
+        String saveFile;
+        System.out.println("The default file to load data is: "+fileName);
+
+        if(returnYorN("Do you want to change the loading file? (Y/N): ")){
+            saveFile = returnInput("Enter File name with file type (Ex: New File.txt): ");
+        }else {
+            saveFile = fileName;
+        }
+
+        File file = new File(saveFile);
+
+        //Validating the File
+        if(!file.exists()) {
+            System.out.println("The file " + saveFile + " does not exists. Please check the filename and try again !\n");
+            System.out.println("Returning to Main menu...");
+            return;
+        }else if(!file.canRead()){
+            System.out.println("The file you entered was unable to read. Please enter a .txt file\n");
+            loadDetails(fileName);
+        } else{
+            if(!returnYorN("Please confirm uploading data in file \""+file.getName()+"\" (Y/N): ")){
+                System.out.println("Returning to Main menu...\n");
+                return;
+            } else {
+                System.out.println("\nUploading file data...\n");
+            }
+        }
+
+        Student[] temp = stModule_evaluator.clone(); //Cloning the array if in case an error occur while uploading data
+
+        try{
+            Scanner fileReader = new Scanner(file);
+
+            //Checking the file contain data or empty
+            if(!fileReader.hasNextLine()){
+                System.out.println("File entered does not contain any data! Please check the file again.\n");
+                System.out.println("Returning to Main menu...\n");
+                return;
+            }
+
+            //Uploading file data to the array
+            String text;
+            for(Student student: stModule_evaluator) {
+                if(student.getStID().equals("-")) {
+                    if(fileReader.hasNextLine()) { // Handles getting IO exception when lines are finished
+                        text = fileReader.nextLine();
+
+                        if (text.startsWith("w") && (text.length() == 8)) {
+                            student.setStID(text);
+
+                        } else if (Character.isAlphabetic(text.charAt(0))) {
+                            student.setStName(text);
+
+                        } else if (Character.isDigit(text.charAt(0))) {
+                            if(student.getMarks1() == -1){
+                                student.setMarks1(Float.parseFloat(text));
+                            } else if(student.getMarks2() == -1){
+                                student.setMarks2(Float.parseFloat(text));
+                            } else {
+                                student.setMarks3(Float.parseFloat(text));
+                            }
+
+                        } else {
+                            student.setStName("-");
+                            student.setStID("-");
+                            student.setMarks1(-1);
+                            student.setMarks2(-1);
+                            student.setMarks3(-1);
+                        }
+                    }
+                }
+            }
+
+
+            System.out.println("Data has been uploaded to the system successfully !");
+            System.out.println("INFO: Please note that corrupted data in the file has been recorded as \"-\"\n");
+            fileReader.close();
+
+            String mainMenu = "";
+
+            while (!mainMenu.equals("0")){
+                mainMenu = returnInput("Enter \"0\" to enter Main menu: ");
+            }
+            System.out.println("Returning to Main menu...\n");
+
+
+        }catch (IOException e){
+            System.out.println("Sorry! Request can not be completed due to IO error\nError: "+e.getMessage());
+            System.out.println("Uploading data declined !\n");
+            stModule_evaluator = temp; //Updating the array by deleting the data added by the file and restoring previous data
+            System.out.println("Returning to Main menu...\n");
+
+        }catch(ArrayIndexOutOfBoundsException e){
+            System.out.println("Sorry! File contained data more than free system storage");
+            System.out.println("Uploading data declined !\n");
+            stModule_evaluator = temp; //Updating the array by deleting the data added by the file and restoring previous data
+
+        }catch (Exception e){
+            System.out.println("Sorry! Request can not be completed due to IO error\nError: "+e.getMessage());
+            System.out.println("Uploading data declined !\n");
+            stModule_evaluator = temp; //Updating the array by deleting the data added by the file and restoring previous data
+        }
+    }
+
 
 
 
@@ -826,8 +1121,6 @@ public class StudentManagementSystemII {
             else {
                 return value;
             }
-
-
         }
     }
 
@@ -979,7 +1272,5 @@ public class StudentManagementSystemII {
         for (int i = 0; i < array.length; i++) {
             array[i] = new Student("-","-");
         }
-
     }
-
 }
