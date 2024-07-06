@@ -1,12 +1,25 @@
 public class Test {
+    private static final Student [] stModule_evaluator = new Student[100];
+
     public static void main(String[] args) {
 
-        double dev = 213.0;
+        initializeModuleEvaluator(stModule_evaluator);
 
+        System.out.println(stModule_evaluator.length);
 
-        double result2 = Math.round(dev*100.0)/100.0;
+        for (int i = 0; i < stModule_evaluator.length; i++) {
+            System.out.println(i+stModule_evaluator[i].getStName());
 
-        System.out.println(result2);
+        }
 
     }
+
+    public static void initializeModuleEvaluator(Student[] array){
+
+        for (int i = 0; i < stModule_evaluator.length; i++) {
+            stModule_evaluator[i] = new Student("-","-");
+        }
+    }
+
+
 }

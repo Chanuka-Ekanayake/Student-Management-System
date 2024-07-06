@@ -18,7 +18,7 @@ import java.io.FileWriter;
 public class StudentManagementSystemII {
 
     private static  String[][] student_details = new String[100][4];
-    private static final Student [] student_evaluator = new Student[100];
+    private static final Student [] stModule_evaluator = new Student[100];
 
 
     public static void main(String[] args) {
@@ -29,6 +29,7 @@ public class StudentManagementSystemII {
 
         //Initialize the array
         initialize(student_details);
+        initializeModuleEvaluator(stModule_evaluator);
 
         String choice = "";
 
@@ -628,6 +629,9 @@ public class StudentManagementSystemII {
     // ----------------> CHOICE 8
     public static void studentModuleEvaluator(){
 
+        System.out.println("\n--- Student Module Evaluator ---\n");
+
+
         String choice = "";
         while (!choice.equals("0")){
 
@@ -652,6 +656,75 @@ public class StudentManagementSystemII {
         }
 
     }
+
+
+//------------------------------ Sub Menu (Module Evaluator) Methods -------------------------------
+
+    // ----------------> CHOICE 1
+    public static void addStudent_moduleEvaluator(){
+
+        System.out.println("\n--- Add Student for the  Module Evaluator ---\n");
+
+        boolean stAdd = false;
+
+        for (int i = 0; i < stModule_evaluator.length ; i++) {
+            if (stModule_evaluator[i].getStName().equals("-") && stModule_evaluator[i].getStID().equals("-")) {
+
+                String stID = studentID();
+
+                int stIndex = studentIndex(stID, student_details);
+
+                //Validating the Student
+                if (stIndex == -1) {
+                    System.out.println("\nSorry! There is no student registered on ID " + stID);
+                    System.out.println("Only registered students can be added to the Module evaluator\n");
+                    String checkDetails = returnYorN("Do you want to check registered Student details? (Y/N): ");
+
+                    if (checkDetails.equals("Y")) {
+                        viewByNames();
+                    } else {
+                        System.out.println("Returning to Module Evaluator menu...\n");
+                        return;
+                    }
+
+
+                    //Check the student if already existing in the array by adding an elseif here !!!!
+
+                } else {
+                    displayDetails(stIndex, student_details);
+                }
+
+                String confirmation = returnYorN("Confirm adding student with above details to the evaluator (Y/N): ");
+
+                if(confirmation.equals("Y")){
+                    stModule_evaluator[i].setStID(stID);
+                    stModule_evaluator[i].setStName(student_details[stIndex][1]+" "+student_details[stIndex][2]);
+                    stAdd = true;
+
+                    System.out.println("\nStudent details added successfully !\n");
+                } else {
+                    System.out.println("Returning to Module Evaluator menu...\n");
+                    return;
+                }
+
+                String addAnotherSt = returnYorN("Do you want to add another student? (Y/N): ");
+
+                if(addAnotherSt.equals("Y")){
+                    addStudent_moduleEvaluator();
+                } else {
+                    System.out.println("Returning to Module Evaluator menu...\n");
+                    return;
+                }
+            }
+        }
+
+        if(!stAdd){
+            System.out.println("Sorry no system space to add the student");
+        }
+    }
+
+
+
 
 
 
@@ -778,9 +851,9 @@ public class StudentManagementSystemII {
             array (2D String Array): Array containing student details
          */
 
-        System.out.println("Student Name   : "+array[index][1]+" "+array[index][2]);
-        System.out.println("Student ID     : "+array[index][0]);
-        System.out.println("Registered Date: "+array[index][3]+"\n");
+        System.out.println("\nStudent Name    : "+array[index][1]+" "+array[index][2]);
+        System.out.println("Student ID      : "+array[index][0]);
+        System.out.println("Registered Date : "+array[index][3]+"\n");
 
     }
 
@@ -836,4 +909,14 @@ public class StudentManagementSystemII {
         }
         return emptyBase;
     }
+
+
+    public static void initializeModuleEvaluator(Student[] array){
+
+        for (int i = 0; i < stModule_evaluator.length; i++) {
+            stModule_evaluator[i] = new Student("-","-");
+        }
+
+    }
+
 }
