@@ -67,8 +67,4 @@ public class Module {
     public float getTotal(){
         return (getMarks1()+getMarks2()+getMarks3());
     }
-
-
-
-
 }

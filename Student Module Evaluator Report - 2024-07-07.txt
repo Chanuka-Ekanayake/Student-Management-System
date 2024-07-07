@@ -1,0 +1,4 @@
+-Student ID-	-Student Name-		 -Marks M1-		 -Marks M2-		 -Marks M3-		 -Total-		-Average		  -Grade-
+w2989977			Luvis				99.0			98.0			97.0		  294.0			  98.0			Distinction
+w3457786			Charles				98.0			89.0			90.0		  277.0			  92.33			Distinction
+w2094455			Lando				88.0			89.0			99.0		  276.0			  92.0			Distinction

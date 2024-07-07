@@ -15,7 +15,7 @@ import java.util.Scanner;
 import java.io.File;
 import java.io.FileWriter;
 
-public class StudentManagementSystemII {
+public class StudentManagementSystemIII {
 
     private static  String[][] student_details = new String[100][3];
     private static  Student [] stModule_evaluator = new Student[100];
@@ -243,6 +243,16 @@ public class StudentManagementSystemII {
             student_details[stIndex][0] = "-";
             student_details[stIndex][1] = "-";
             student_details[stIndex][2] = "-";
+
+            for (Student student:stModule_evaluator){
+                if(stID.equals(student.getStID())){
+                    student.setStID("-");
+                    student.setStName("-");
+                    student.setMarks1(-1);
+                    student.setMarks2(-1);
+                    student.setMarks3(-1);
+                }
+            }
 
             System.out.println("Completed deleting student with ID " + stID+"\n");
 
@@ -608,6 +618,9 @@ public class StudentManagementSystemII {
 
     // ----------------> CHOICE 8
     public static void studentModuleEvaluator(){
+        /*
+
+         */
 
         System.out.println("\n--- Student Module Evaluator ---\n");
 
@@ -704,8 +717,6 @@ public class StudentManagementSystemII {
                             return;
                         }
                     }
-
-
                     displayDetails(stIndex, student_details); //Display student details to conform before adding
                 }
 
@@ -778,6 +789,9 @@ public class StudentManagementSystemII {
 
     // ----------------> CHOICE 5
     public static void checkDetails(){
+        /*
+        !!!!!!! REMOVE THIS METHOD !!!!!!!!
+         */
         String stID = studentID();
 
         boolean marksAdded = false;
@@ -806,6 +820,9 @@ public class StudentManagementSystemII {
 
     // ----------------> CHOICE 4
     public static void summaryReport_moduleEvaluator(){
+        /*
+
+         */
         System.out.println("\n--- Summary Report of the  Module Evaluator ---\n");
 
 
@@ -838,6 +855,9 @@ public class StudentManagementSystemII {
 
     // ----------------> CHOICE 5
     public static void fullReport_moduleEvaluator(){
+        /*
+
+         */
         System.out.println("\n--- Full Report of the  Module Evaluator ---\n");
 
         //sort the module evaluator array - Bubble sort
@@ -868,18 +888,36 @@ public class StudentManagementSystemII {
             }
         }
 
+        //Download report
+        if(returnYorN("Do you want to download the report? (Y/N): ")){
 
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String date = simpleDateFormat.format(new Date());
 
+            String fileName = "Student Module Evaluator Report - "+date+".txt";
 
+            File file = new File(fileName);
 
+            try{
+                FileWriter fileWriter = new FileWriter(file);
+                fileWriter.write("-Student ID-\t-Student Name-\t\t -Marks M1-\t\t -Marks M2-\t\t -Marks M3-\t\t -Total-\t\t-Average\t\t  -Grade-\n");
 
+                for(Student student:stModule_evaluator){
+                    if(!student.getStID().equals("-")){
+                        fileWriter.write(student.getStID() + "\t\t\t" + student.getStName() + "\t\t\t\t" + student.getMarks1() + "\t\t\t" + student.getMarks2() + "\t\t\t" + student.getMarks3() + "\t\t  " + student.getTotal() + "\t\t\t  " + student.getAverage() + "\t\t\t" + student.getGrade()+"\n");
+                    }
+                }
+                fileWriter.close();
 
+                System.out.println("\nDownload Completed !");
+                System.out.println("Report downloaded to"+file.getAbsolutePath()+"\n");
 
-
-
-
-
-
+            }catch (IOException e){
+                System.out.println("Error with IO process: "+e.getMessage());
+            } catch (Exception e){
+                System.out.println("Error: "+e.getMessage());
+            }
+        }
 
 
         String returnBack;

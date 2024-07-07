@@ -82,6 +82,5 @@ public class Student extends Module {
     public void setStName(String stName) {
         this.stName = stName;
     }
-
 }
 
