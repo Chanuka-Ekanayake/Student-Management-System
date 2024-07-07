@@ -4,14 +4,15 @@ public class Module {
     private float marks2;
     private float marks3;
 
-    public Module (float marks1, float marks2, float marks3){
-        this.marks1 = marks1;
-        this.marks2 = marks2;
-        this.marks3 = marks3;
+    public Module (){
+        this.marks1 = -1;
+        this.marks2 = -1;
+        this.marks3 = -1;
     }
 
     private float average(){
-        return (this.marks1 + this.marks2 + this.marks3)/3;
+        float avg =  (this.marks1 + this.marks2 + this.marks3)/3;
+        return (float) Math.round(avg * 100) /100;
     }
 
     private String moduleGrade(float averageMarks){
@@ -61,6 +62,10 @@ public class Module {
 
     public float getAverage(){
         return average();
+    }
+
+    public float getTotal(){
+        return (getMarks1()+getMarks2()+getMarks3());
     }
 
 

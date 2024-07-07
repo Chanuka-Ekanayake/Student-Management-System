@@ -1,11 +1,10 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Student {
+public class Student extends Module {
 
     private String stID;
     private String stName;
-    private final Module moduleMarks = new Module(-1,-1,-1);
 
     public Student (String stName, String stID){
         this.stID = stID;
@@ -18,9 +17,10 @@ public class Student {
         float marks2 = returnValidMarks("Enter Marks of Module 2: ");
         float marks3 = returnValidMarks("Enter Marks of Module 3: ");
 
-        this.moduleMarks.setMarks1(marks1);
-        this.moduleMarks.setMarks2(marks2);
-        this.moduleMarks.setMarks3(marks3);
+        setMarks1(marks1);
+        setMarks2(marks2);
+        setMarks3(marks3);
+
 
         System.out.println("\nMarks have been added successfully !\n");
     }
@@ -29,20 +29,16 @@ public class Student {
         System.out.println("\n---------Student Details---------\n");
         System.out.println("Student ID     : "+this.stID);
         System.out.println("Student Name   : "+this.stName);
-        System.out.println("Module 1 marks : "+this.moduleMarks.getMarks1());
-        System.out.println("Module 2 marks : "+this.moduleMarks.getMarks2());
-        System.out.println("Module 3 marks : "+this.moduleMarks.getMarks3());
-        System.out.println("Total marks    : "+(this.moduleMarks.getMarks1()+this.moduleMarks.getMarks2()+this.moduleMarks.getMarks3()));
-        System.out.println("Average marks  : "+this.moduleMarks.getAverage());
-        System.out.println("Grade          : "+this.moduleMarks.getGrade());
+        System.out.println("Module 1 marks : "+getMarks1());
+        System.out.println("Module 2 marks : "+getMarks2());
+        System.out.println("Module 3 marks : "+getMarks3());
+        System.out.println("Total marks    : "+(getMarks1()+getMarks2()+getMarks3()));
+        System.out.println("Average marks  : "+getAverage());
+        System.out.println("Grade          : "+getGrade());
     }
 
     public boolean checkEmptyMarks(){
-        if(this.moduleMarks.getMarks1() == -1 && this.moduleMarks.getMarks2() == -1 && this.moduleMarks.getMarks3() == -1){
-            return true;
-        }else {
-            return false;
-        }
+        return getMarks1() == -1 && getMarks2() == -1 && getMarks3() == -1;
     }
 
 
@@ -85,41 +81,6 @@ public class Student {
 
     public void setStName(String stName) {
         this.stName = stName;
-    }
-
-    public float getMarks1(){
-        return this.moduleMarks.getMarks1();
-    }
-    public float getMarks2(){
-        return this.moduleMarks.getMarks2();
-    }
-
-    public float getMarks3(){
-        return this.moduleMarks.getMarks3();
-    }
-
-    public void setMarks1(float marks1){
-        this.moduleMarks.setMarks1(marks1);
-    }
-
-    public void setMarks2(float marks2) {
-        this.moduleMarks.setMarks1(marks2);
-    }
-
-    public void setMarks3(float marks3) {
-        this.moduleMarks.setMarks1(marks3);
-    }
-
-    public float getAverage(){
-        return this.moduleMarks.getAverage();
-    }
-
-    public String getGrade(){
-        return this.moduleMarks.getGrade();
-    }
-
-    public float getTotal(){
-        return (this.moduleMarks.getMarks1()+this.moduleMarks.getMarks2()+this.moduleMarks.getMarks3());
     }
 
 }

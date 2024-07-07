@@ -861,12 +861,26 @@ public class StudentManagementSystemII {
         }
 
         //Display full report
-        System.out.println("-Student ID-\t\t-Student Name-\t\t-Module 1 marks-\t-Module 2 marks-\t-Module 3 marks-\t-Total-\t-Average\t\t-Grade-\n");
+        System.out.println("-Student ID-\t-Student Name-\t\t -Marks M1-\t\t -Marks M2-\t\t -Marks M3-\t\t -Total-\t\t-Average\t\t  -Grade-\n");
         for(Student student: stModule_evaluator) {
             if (!student.getStName().equals("-")) {
-                System.out.println(student.getStID() + "\t\t" + student.getStName() + "\t\t\t" + student.getMarks1() + "\t\t\t" + student.getMarks2() + "\t\t\t" + student.getMarks3() + "\t\t\t" + student.getTotal() + "\t\t\t" + student.getAverage() + "\t\t\t\t" + student.getGrade());
+                System.out.println(student.getStID() + "\t\t\t" + student.getStName() + "\t\t\t\t" + student.getMarks1() + "\t\t\t" + student.getMarks2() + "\t\t\t" + student.getMarks3() + "\t\t  " + student.getTotal() + "\t\t\t  " + student.getAverage() + "\t\t\t" + student.getGrade());
             }
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         String returnBack;
         do{
@@ -875,8 +889,14 @@ public class StudentManagementSystemII {
     }
 
 
+
+
+
     // ----------------> CHOICE 5
     public static void saveData_moduleEvaluator(String fileName){
+        /*
+
+         */
         System.out.println("\n--- Save data in Module Evaluator ---\n");
 
         String saveFile;
@@ -1021,30 +1041,32 @@ public class StudentManagementSystemII {
             String text;
             for(Student student: stModule_evaluator) {
                 if(student.getStID().equals("-")) {
-                    if(fileReader.hasNextLine()) { // Handles getting IO exception when lines are finished
-                        text = fileReader.nextLine();
+                    for (int i = 0; i < 5; i++) { // To iterate through the file 5 times because 1 specific student will occupy 5 lines in the txt file
+                        if (fileReader.hasNextLine()) { // Handles getting IO exception when lines are finished
+                            text = fileReader.nextLine();
 
-                        if (text.startsWith("w") && (text.length() == 8)) {
-                            student.setStID(text);
+                            if (text.startsWith("w") && (text.length() == 8)) {
+                                student.setStID(text);
 
-                        } else if (Character.isAlphabetic(text.charAt(0))) {
-                            student.setStName(text);
+                            } else if (Character.isAlphabetic(text.charAt(0))) {
+                                student.setStName(text);
 
-                        } else if (Character.isDigit(text.charAt(0))) {
-                            if(student.getMarks1() == -1){
-                                student.setMarks1(Float.parseFloat(text));
-                            } else if(student.getMarks2() == -1){
-                                student.setMarks2(Float.parseFloat(text));
+                            } else if (Character.isDigit(text.charAt(0))) {
+                                if (student.getMarks1() == -1) {
+                                    student.setMarks1(Float.parseFloat(text));
+                                } else if (student.getMarks2() == -1) {
+                                    student.setMarks2(Float.parseFloat(text));
+                                } else {
+                                    student.setMarks3(Float.parseFloat(text));
+                                }
+
                             } else {
-                                student.setMarks3(Float.parseFloat(text));
+                                student.setStName("-");
+                                student.setStID("-");
+                                student.setMarks1(-1);
+                                student.setMarks2(-1);
+                                student.setMarks3(-1);
                             }
-
-                        } else {
-                            student.setStName("-");
-                            student.setStID("-");
-                            student.setMarks1(-1);
-                            student.setMarks2(-1);
-                            student.setMarks3(-1);
                         }
                     }
                 }
