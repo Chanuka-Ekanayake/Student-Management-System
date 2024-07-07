@@ -1,4 +1,4 @@
-//------------------------------------------------- Personal info ----------------------------------------------
+//------------------------------------------------- Personal info ---------------------------------------------------
 //Author: Chanuka Ekanayake
 //UoW ID: w2083948
 //IIT ID: 20230100
@@ -23,11 +23,9 @@ public class StudentManagementSystemIII {
 
     public static void main(String[] args) {
 
-        //String [][] student_details = new String [100][4];
         String file_name = "Student data.txt";
 
-
-        //Initialize the array
+        //Initialize arrays
         initialize(student_details);
         initializeModuleEvaluator(stModule_evaluator);
 
@@ -41,7 +39,7 @@ public class StudentManagementSystemIII {
             System.out.println("2. Register Student (with ID)");
             System.out.println("3. Delete Student");
             System.out.println("4. Find Student (with Student ID)");
-            System.out.println("5. Store Student details into a file");
+            System.out.println("5. Save Student details into a file");
             System.out.println("6. Load details from the file to the system");
             System.out.println("7. View the list of students based on their names");
             System.out.println("8. Enter Student Module Evaluator");
@@ -88,7 +86,7 @@ public class StudentManagementSystemIII {
     }
 
 
-//--------------------------------------- Main menu Methods -------------------------------------
+//--------------------------------------------- Main menu Methods -----------------------------------------------------
 
     // ----------------> CHOICE 1
     public static void availableSeats(){
@@ -97,11 +95,10 @@ public class StudentManagementSystemIII {
         whether the StudentID is empty or not
          */
 
-        System.out.println("\n--- Available Seats ---\n");
+        System.out.println("\n\t--- Available Seats ---\n");
 
-
-        int availability = 0;
-
+        //Check availability
+        short availability = 0;
         for(String[] l: student_details){
             for(String element: l){
                 if(element.equals("-")){
@@ -130,7 +127,7 @@ public class StudentManagementSystemIII {
         Gets user inputs on Student ID, Student First name, Student last name and store
          */
 
-        System.out.println("\n--- Register Student ---\n");
+        System.out.println("\n\t--- Register Student ---\n");
 
         boolean Registered = false;
 
@@ -156,6 +153,7 @@ public class StudentManagementSystemIII {
 
                 String studentName = returnInput("Enter Student name: ");
 
+                //Setting up the registration date
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 String date = simpleDateFormat.format(new Date());
 
@@ -202,7 +200,7 @@ public class StudentManagementSystemIII {
             indicate the slot is available for future registrations
          */
 
-        System.out.println("\n--- Delete Student ---\n");
+        System.out.println("\n\t--- Delete Student ---\n");
 
         //Returning to Main menu if the initial array is empty
         if(emptyDataBase(student_details)){
@@ -240,10 +238,13 @@ public class StudentManagementSystemIII {
 
 
         if (returnYorN("Confirm deleting the student with above details (Y/N): ")) {
+
+            //Deleting student details from the registration data
             student_details[stIndex][0] = "-";
             student_details[stIndex][1] = "-";
             student_details[stIndex][2] = "-";
 
+            //Deleting details from the Module Evaluation data
             for (Student student:stModule_evaluator){
                 if(stID.equals(student.getStID())){
                     student.setStID("-");
@@ -276,7 +277,7 @@ public class StudentManagementSystemIII {
             an available studentID or enter 0
          */
 
-        System.out.println("\n--- Find Student ---\n");
+        System.out.println("\t\n--- Find Student ---\n");
 
         //Returning to Main menu if the initial array is empty
         if(emptyDataBase(student_details)){
@@ -549,10 +550,8 @@ public class StudentManagementSystemIII {
             System.out.println("Sorry! Request can not be completed due to IO error\nError: "+e.getMessage());
             System.out.println("Uploading data declined !\n");
             student_details = temp; //Updating the array by deleting the data added by the file and restoring previous data
-
         }
     }
-
 
     // ----------------> CHOICE 7
     public static void viewByNames(){
@@ -563,6 +562,7 @@ public class StudentManagementSystemIII {
 
         System.out.println("\n--- View list of Student ---\n");
 
+        //Returning to main menu if the database is empty
         if(emptyDataBase(student_details)){
             System.out.println("Sorry ! No student details saved to view Students by Name.");
 
@@ -586,7 +586,7 @@ public class StudentManagementSystemIII {
         //Saving student names into a new array in order for sort and display
         for (int i = 0; i < student_details.length; i++) {
             if(!student_details[i][1].equals("-")) {
-                studentNamesArray[i] = student_details[i][1] + " " +" - "+student_details[i][0];
+                studentNamesArray[i] = student_details[i][1] + "          " +" - "+student_details[i][0];
             }
         }
 
@@ -619,8 +619,11 @@ public class StudentManagementSystemIII {
     // ----------------> CHOICE 8
     public static void studentModuleEvaluator(){
         /*
-
+            The student Module Evaluator - A subsection to analyse students module marks and getting evaluation reports
+            according to students marks.
          */
+
+        String filename = "Module data.txt";
 
         System.out.println("\n--- Student Module Evaluator ---\n");
 
@@ -628,14 +631,13 @@ public class StudentManagementSystemIII {
         String choice = "";
         while (!choice.equals("0")){
 
-            //Submenu
+            //Module Evaluator Menu
             System.out.println("1. Add a student");
             System.out.println("2. Add Module marks of a student");
             System.out.println("3. Get Summary report");
             System.out.println("4. Get Complete report");
-            System.out.println("5. Check details of a student");
-            System.out.println("6. Save Module Evaluation data ");
-            System.out.println("7. Load Module Evaluation data ");
+            System.out.println("5. Save Module Evaluation data ");
+            System.out.println("6. Load Module Evaluation data ");
             System.out.println("0. Exit to Main menu\n");
 
             choice = returnInput("Enter choice: ");
@@ -654,22 +656,21 @@ public class StudentManagementSystemIII {
                     fullReport_moduleEvaluator();
                     break;
                 case "5":
-                    checkDetails();
+                    saveData_moduleEvaluator(filename);
                     break;
                 case "6":
-                    saveData_moduleEvaluator("Module data.txt");
-                    break;
-                case "7":
-                    loadData_moduleEvaluator("Module data.txt");
+                    loadData_moduleEvaluator(filename);
                     break;
                 case "0":
-                    System.out.println("Returning to Main menu...\n");
+                    if(returnYorN("Do you want to save data before exiting? (Y/N): ")){
+                        saveDetails(filename);
+                    }
+                    System.out.println("\nReturning to Main menu...\n");
                     break;
                 default:
                     System.out.println("Invalid choice ! Please select a choice 1, 2 or \"0\" to exit\n");
             }
         }
-
     }
 
 
@@ -684,14 +685,13 @@ public class StudentManagementSystemIII {
 
         System.out.println("\n--- Add Student for the  Module Evaluator ---\n");
 
-        for (Student value : stModule_evaluator) {
-            if (value.getStName().equals("-") && value.getStID().equals("-")) {
+        for (Student student : stModule_evaluator) {
+            if (student.getStName().equals("-") && student.getStID().equals("-")) {
 
                 String stID = studentID();
-
                 int stIndex = studentIndex(stID, student_details);
 
-                //Validating the Student
+                //Validating the Student ID
                 if (stIndex == -1) {
                     System.out.println("\nSorry! There is no student registered on ID " + stID);
                     System.out.println("Only registered students can be added to the Module evaluator\n");
@@ -703,10 +703,10 @@ public class StudentManagementSystemIII {
                         return;
                     }
 
-
                 } else {
-                    for (Student student : stModule_evaluator) {
-                        if (student.getStID().equals(stID)) {
+                    //Checks if the student is already registered in the Module Evaluator or not
+                    for (Student Rstudent : stModule_evaluator) {
+                        if (Rstudent.getStID().equals(stID)) {
                             System.out.println("The student ID you entered was already registered in Module Evaluator ! \n");
 
                             String returnBack = "";
@@ -722,8 +722,10 @@ public class StudentManagementSystemIII {
 
 
                 if (returnYorN("Confirm adding student with above details to the evaluator (Y/N): ")) {
-                    value.setStID(stID);
-                    value.setStName(student_details[stIndex][1]);
+
+                    //Registering student in Module Evaluator
+                    student.setStID(stID);
+                    student.setStName(student_details[stIndex][1]);
 
                     System.out.println("\nStudent details added successfully !\n");
 
@@ -742,7 +744,6 @@ public class StudentManagementSystemIII {
         }
     }
 
-
     // ----------------> CHOICE 2
     public static void addMarks_moduleEvaluator(){
         /*
@@ -753,12 +754,12 @@ public class StudentManagementSystemIII {
         System.out.println("\n--- Add Student Marks for the  Module Evaluator ---\n");
 
         String stID = studentID();
-
         boolean marksAdded = false;
 
         for (Student student : stModule_evaluator) {
-            if (student.getStID().equals(stID)) {
-                if (!student.checkEmptyMarks()) {
+            if (student.getStID().equals(stID)) { //Check the Student is already registered or not
+                if (!student.checkEmptyMarks()) { //Check is there already marks assigned to the student
+
                     System.out.println(student.getStName() + "'s Modules marks have been already added.");
                     String changeMarks = returnInput("Do you want to change the marks? (Y/N): ");
                     if (changeMarks.equals("Y")) {
@@ -768,6 +769,7 @@ public class StudentManagementSystemIII {
                         System.out.println("Returning to Module Evaluator menu...\n");
                         return;
                     }
+
                 } else {
                     student.EnterStudentMarks();
                     marksAdded = true;
@@ -788,40 +790,10 @@ public class StudentManagementSystemIII {
     }
 
     // ----------------> CHOICE 5
-    public static void checkDetails(){
-        /*
-        !!!!!!! REMOVE THIS METHOD !!!!!!!!
-         */
-        String stID = studentID();
-
-        boolean marksAdded = false;
-
-        for (Student student : stModule_evaluator) {
-            if (student.getStID().equals(stID)) {
-
-                student.displayStudentDetails();
-                marksAdded = true;
-            }
-        }
-
-        if(!marksAdded){
-            System.out.println("The Student ID you entered was not added to the Module Evaluator !");
-            System.out.println("Please check again !\n");
-        }
-
-        if(returnYorN("Do you want to check details of another student? (Y/N): ")){
-            checkDetails();
-        }else {
-            System.out.println("Returning to Module Evaluator menu...\n");
-            return;
-        }
-
-    }
-
-    // ----------------> CHOICE 4
     public static void summaryReport_moduleEvaluator(){
         /*
-
+            Generate a summary report of number of students registered in the module evaluator and the number of
+            students who scored more than 40 marks for every module
          */
         System.out.println("\n--- Summary Report of the  Module Evaluator ---\n");
 
@@ -853,10 +825,12 @@ public class StudentManagementSystemIII {
     }
 
 
-    // ----------------> CHOICE 5
+    // ----------------> CHOICE 6
     public static void fullReport_moduleEvaluator(){
         /*
-
+            Generates a full report of students Module marks with their relevant details. Additionally,
+            Student average, total marks and average is displayed. The student list is further sorted according to the
+            highest average mark to the lowest average mark. Moreover, user gets a option to download the report
          */
         System.out.println("\n--- Full Report of the  Module Evaluator ---\n");
 
@@ -933,8 +907,10 @@ public class StudentManagementSystemIII {
     // ----------------> CHOICE 5
     public static void saveData_moduleEvaluator(String fileName){
         /*
-
+            Save the data registered in the module evaluator for a file. Works similar to the saving option
+            in the main menu
          */
+
         System.out.println("\n--- Save data in Module Evaluator ---\n");
 
         String saveFile;
@@ -1031,6 +1007,10 @@ public class StudentManagementSystemIII {
 
 
     public static void loadData_moduleEvaluator(String fileName){
+        /*
+            Load data from a saved file to the module evaluator. Works similar to the data loading option
+            in main menu
+         */
 
         System.out.println("\n--- Load Module Evaluation Data ---\n");
 
