@@ -12,6 +12,9 @@ public class Student extends Module {
     }
 
     public void EnterStudentMarks() {
+        /*
+        Get student marks from the user and set marks accordingly
+         */
 
         float marks1 = returnValidMarks("Enter Marks of Module 1: ");
         float marks2 = returnValidMarks("Enter Marks of Module 2: ");
@@ -26,11 +29,23 @@ public class Student extends Module {
     }
 
     public boolean checkEmptyMarks() {
+        /*
+        Check the user's marks are empty or not
+         */
         return getMarks1() == -1 && getMarks2() == -1 && getMarks3() == -1;
     }
 
 
     private float returnValidMarks(String prompt) {
+        /*
+        Method to check marks input by user validate the regular conditions of marks
+
+        Arguments:
+            Prompt (String): The prompt which user should enter the marks
+
+        Returns:
+            value (Float): Valid marks
+         */
 
         Scanner input = new Scanner(System.in);
         float value;

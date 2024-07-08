@@ -9,6 +9,7 @@
 
 //Importing Packages
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
@@ -647,38 +648,38 @@ public class StudentManagementSystemIII {
         while (!choice.equals("0")){
 
             //Module Evaluator Menu
-            System.out.println("1. Add a student");
-            System.out.println("2. Add Module marks of a student");
-            System.out.println("3. Get Summary report");
-            System.out.println("4. Get Complete report");
-            System.out.println("5. Save Module Evaluation data ");
-            System.out.println("6. Load Module Evaluation data ");
+            System.out.println("A. Add a student");
+            System.out.println("B. Add Module marks of a student");
+            System.out.println("C. Get Summary report");
+            System.out.println("D. Get Complete report");
+            System.out.println("E. Save Module Evaluation data ");
+            System.out.println("F. Load Module Evaluation data ");
             System.out.println("0. Exit to Main menu\n");
 
-            choice = returnInput("Enter choice: ");
+            choice = returnInput("Enter choice: ").toUpperCase();
 
             switch (choice){
-                case "1":
+                case "A":
                     addStudent_moduleEvaluator();
                     break;
-                case "2":
+                case "B":
                     addMarks_moduleEvaluator();
                     break;
-                case"3":
+                case "C":
                     summaryReport_moduleEvaluator();
                     break;
-                case "4":
+                case "D":
                     fullReport_moduleEvaluator();
                     break;
-                case "5":
+                case "E":
                     saveData_moduleEvaluator(filename);
                     break;
-                case "6":
+                case "F":
                     loadData_moduleEvaluator(filename);
                     break;
                 case "0":
                     if(returnYorN("Do you want to save data before exiting? (Y/N): ")){
-                        saveDetails(filename);
+                        saveData_moduleEvaluator(filename);
                     }
                     System.out.println("\nReturning to Main menu...\n");
                     break;
@@ -889,10 +890,11 @@ public class StudentManagementSystemIII {
         }
 
         //Display full report
-        System.out.println("-Student ID-\t-Student Name-\t\t -Marks M1-\t\t -Marks M2-\t\t -Marks M3-\t\t -Total-\t\t-Average\t\t  -Grade-\n");
+        System.out.printf("%-18s %-25s %-20s %-20s %-22s %-19s %-23s %-22s\n","Student ID", "Student Name", "Marks M1", "Marks M2", "Marks M3", "Total", "Average", "Grade");
+        System.out.printf("%-18s %-25s %-20s %-20s %-22s %-19s %-23s %-22s\n","----------", "------------", "--------", "--------", "--------", "-----", "-------", "-----");
         for(Student student: stModule_evaluator) {
             if (!student.getStName().equals("-")) {
-                System.out.println(student.getStID() + "\t\t\t" + student.getStName() + "\t\t\t\t" + student.getMarks1() + "\t\t\t" + student.getMarks2() + "\t\t\t" + student.getMarks3() + "\t\t  " + student.getTotal() + "\t\t\t  " + student.getAverage() + "\t\t\t" + student.getGrade());
+                System.out.printf("%-20s %-25s %-20s %-20s %-20s %-20s %-20s %-20s\n", student.getStID(),student.getStName(),student.getMarks1(),student.getMarks2(),student.getMarks3(),student.getTotal(),student.getAverage(),student.getGrade());
             }
         }
         System.out.println();//To keep a gap between the data set and next input
@@ -908,12 +910,13 @@ public class StudentManagementSystemIII {
             File file = new File(fileName);
 
             try{
-                FileWriter fileWriter = new FileWriter(file);
-                fileWriter.write("-Student ID-\t-Student Name-\t\t -Marks M1-\t\t -Marks M2-\t\t -Marks M3-\t\t -Total-\t\t-Average\t\t  -Grade-\n");
+                PrintWriter fileWriter = new PrintWriter(file);
+                fileWriter.printf("%-18s %-25s %-20s %-20s %-22s %-19s %-23s %-22s\n","Student ID", "Student Name", "Marks M1", "Marks M2", "Marks M3", "Total", "Average", "Grade");
+                fileWriter.printf("%-18s %-25s %-20s %-20s %-22s %-19s %-23s %-22s\n","----------", "------------", "--------", "--------", "--------", "-----", "-------", "-----");
 
                 for(Student student:stModule_evaluator){
                     if(!student.getStID().equals("-")){
-                        fileWriter.write(student.getStID() + "\t\t\t" + student.getStName() + "\t\t\t\t" + student.getMarks1() + "\t\t\t" + student.getMarks2() + "\t\t\t" + student.getMarks3() + "\t\t  " + student.getTotal() + "\t\t\t  " + student.getAverage() + "\t\t\t" + student.getGrade()+"\n");
+                        fileWriter.printf("%-20s %-25s %-20s %-20s %-20s %-20s %-20s %-20s\n", student.getStID(),student.getStName(),student.getMarks1(),student.getMarks2(),student.getMarks3(),student.getTotal(),student.getAverage(),student.getGrade());
                     }
                 }
                 fileWriter.close();
@@ -928,14 +931,11 @@ public class StudentManagementSystemIII {
             }
         }
 
-
         String returnBack;
         do{
             returnBack = returnInput("Enter \"0\" to return to Module Evaluator menu: ");
         }while (!returnBack.equals("0"));
     }
-
-
 
 
 
@@ -1238,8 +1238,6 @@ public class StudentManagementSystemIII {
             }
         }
     }
-
-
 
 
     public static int studentIndex(String stID, String[][] array){

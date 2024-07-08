@@ -11,11 +11,23 @@ public class Module {
     }
 
     private float average(){
+        /*
+        Get the average of 3 marks - round off into 2 decimal places and return
+         */
         float avg =  (this.marks1 + this.marks2 + this.marks3)/3;
         return (float) Math.round(avg * 100) /100;
     }
 
     private String moduleGrade(float averageMarks){
+        /*
+        Get the average of each student and calculate the grade of student
+
+        Arguments:
+            average (Float): Average of Marks of module 1,2a and 3
+
+        Return:
+            Grade (String) : Grade according to the average
+         */
 
         averageMarks = average();
 
