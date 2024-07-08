@@ -2,7 +2,7 @@
 //Author: Chanuka Ekanayake
 //UoW ID: w2083948
 //IIT ID: 20230100
-//Last update: 7-July-2024
+//Last update: 8-July-2024
 
 
 //----------------------------------------------- Coursework Part III ----------------------------------------------
@@ -107,7 +107,15 @@ public class StudentManagementSystemIII {
                 }
             }
         }
-        System.out.println("Number of available seats: "+availability+" out of "+student_details.length+"\n");
+
+        if(availability == 0){
+            System.out.println("No available seats ! All 100 seats have been taken\n");
+        } else if (availability == 100) {
+            System.out.println("All 100 seats are available !\n");
+        } else {
+            System.out.println("Number of available seats: "+availability+" out of "+student_details.length+"\n");
+        }
+
 
 
         while(true){
@@ -204,7 +212,7 @@ public class StudentManagementSystemIII {
 
         //Returning to Main menu if the initial array is empty
         if(emptyDataBase(student_details)){
-            System.out.println("Sorry ! No student details saved to delete.");
+            System.out.println("Sorry ! No student details saved to delete.\n");
 
             String choice = "";
             while (!choice.equals("0")){
@@ -281,7 +289,7 @@ public class StudentManagementSystemIII {
 
         //Returning to Main menu if the initial array is empty
         if(emptyDataBase(student_details)){
-            System.out.println("Sorry ! No student details saved to Find Students.");
+            System.out.println("Sorry ! No student details saved to Find Students.\n");
 
             String choice = "";
             while (!choice.equals("0")){
@@ -334,7 +342,7 @@ public class StudentManagementSystemIII {
 
         //Returning to Main menu if the initial array is empty
         if(emptyDataBase(student_details)){
-            System.out.println("Sorry ! No student details in the system to save.");
+            System.out.println("Sorry ! No student details in the system to save.\n");
 
             String choice = "";
             while (!choice.equals("0")){
@@ -458,6 +466,10 @@ public class StudentManagementSystemIII {
         //Validating the File
         if(!file.exists()) {
             System.out.println("The file " + saveFile + " does not exists. Please check the filename and try again !\n");
+            String mainMenu = "";
+            while (!mainMenu.equals("0")){
+                mainMenu = returnInput("Enter \"0\" to enter Main menu: ");
+            }
             System.out.println("Returning to Main menu...");
             return;
         }else if(!file.canRead()){
@@ -480,6 +492,10 @@ public class StudentManagementSystemIII {
             //Checking the file contain data or empty
             if(!fileReader.hasNextLine()){
                 System.out.println("File entered does not contain any data! Please check the file again.\n");
+                String mainMenu = "";
+                while (!mainMenu.equals("0")){
+                    mainMenu = returnInput("Enter \"0\" to enter Main menu: ");
+                }
                 System.out.println("Returning to Main menu...\n");
                 return;
             }
@@ -528,7 +544,6 @@ public class StudentManagementSystemIII {
             fileReader.close();
 
             String mainMenu = "";
-
             while (!mainMenu.equals("0")){
                 mainMenu = returnInput("Enter \"0\" to enter Main menu: ");
             }
@@ -564,7 +579,7 @@ public class StudentManagementSystemIII {
 
         //Returning to main menu if the database is empty
         if(emptyDataBase(student_details)){
-            System.out.println("Sorry ! No student details saved to view Students by Name.");
+            System.out.println("Sorry ! No student details saved to view Students by Name.\n");
 
             String choice = "";
             while (!choice.equals("0")){
@@ -696,12 +711,15 @@ public class StudentManagementSystemIII {
                     System.out.println("\nSorry! There is no student registered on ID " + stID);
                     System.out.println("Only registered students can be added to the Module evaluator\n");
 
-                    if (returnYorN("Do you want to check registered Student details? (Y/N): ")) {
-                        viewByNames();
-                    } else {
-                        System.out.println("Returning to Module Evaluator menu...\n");
-                        return;
+                    String returnBack = "";
+                    while (!returnBack.equals("0")){
+                        returnBack = returnInput("Enter \"0\" to return to Module Evaluator menu: ");
                     }
+                    return;
+
+                }else if (stID.equals("-")) {
+                    System.out.println("Returning to Module Evaluator menu...\n");
+                    return;
 
                 } else {
                     //Checks if the student is already registered in the Module Evaluator or not
@@ -754,15 +772,31 @@ public class StudentManagementSystemIII {
         System.out.println("\n--- Add Student Marks for the  Module Evaluator ---\n");
 
         String stID = studentID();
+        int stIndex = studentIndex(stID,student_details);
         boolean marksAdded = false;
+
+        if (stIndex == -1) {
+            System.out.println("\nSorry! There is no student registered on ID " + stID);
+            System.out.println("Only registered students can be added to the Module evaluator\n");
+
+            String returnBack = "";
+            while (!returnBack.equals("0")){
+                returnBack = returnInput("Enter \"0\" to return to Module Evaluator menu: ");
+            }
+            return;
+
+        }else if (stID.equals("-")) {
+            System.out.println("Returning to Module Evaluator menu...\n");
+            return;
+
+        }
 
         for (Student student : stModule_evaluator) {
             if (student.getStID().equals(stID)) { //Check the Student is already registered or not
                 if (!student.checkEmptyMarks()) { //Check is there already marks assigned to the student
 
                     System.out.println(student.getStName() + "'s Modules marks have been already added.");
-                    String changeMarks = returnInput("Do you want to change the marks? (Y/N): ");
-                    if (changeMarks.equals("Y")) {
+                    if (returnYorN("Do you want to change the marks? (Y/N): ")) {
                         student.EnterStudentMarks();
                         marksAdded = true;
                     } else {
@@ -861,6 +895,7 @@ public class StudentManagementSystemIII {
                 System.out.println(student.getStID() + "\t\t\t" + student.getStName() + "\t\t\t\t" + student.getMarks1() + "\t\t\t" + student.getMarks2() + "\t\t\t" + student.getMarks3() + "\t\t  " + student.getTotal() + "\t\t\t  " + student.getAverage() + "\t\t\t" + student.getGrade());
             }
         }
+        System.out.println();//To keep a gap between the data set and next input
 
         //Download report
         if(returnYorN("Do you want to download the report? (Y/N): ")){
