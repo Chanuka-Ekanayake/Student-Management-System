@@ -196,7 +196,11 @@ public class StudentManagementSystemIII {
             }
         }
         else{
-            System.out.println("Sorry no space available to register the student !");
+            System.out.println("Sorry no space available to register the student !\n");
+            String choice = "";
+            while (!choice.equals("0")){
+                choice= returnInput("Enter \"0\" to return to Main menu: ");
+            }
             System.out.println("Returning to main menu...\n");
         }
     }
@@ -701,6 +705,8 @@ public class StudentManagementSystemIII {
 
         System.out.println("\n--- Add Student for the  Module Evaluator ---\n");
 
+        boolean stAdded = false;
+
         for (Student student : stModule_evaluator) {
             if (student.getStName().equals("-") && student.getStID().equals("-")) {
 
@@ -745,6 +751,7 @@ public class StudentManagementSystemIII {
                     //Registering student in Module Evaluator
                     student.setStID(stID);
                     student.setStName(student_details[stIndex][1]);
+                    stAdded = true;
 
                     System.out.println("\nStudent details added successfully !\n");
 
@@ -760,6 +767,16 @@ public class StudentManagementSystemIII {
                     return;
                 }
             }
+        }
+
+        if(!stAdded){
+            System.out.println("Sorry no available for add student to the module evaluator !\n");
+
+            String returnBack = "";
+            while (!returnBack.equals("0")) {
+                returnBack = returnInput("Enter \"0\" to return to Module Evaluator menu: ");
+            }
+            System.out.println("Returning to Module Evaluator menu...\n");
         }
     }
 
@@ -865,7 +882,7 @@ public class StudentManagementSystemIII {
         /*
             Generates a full report of students Module marks with their relevant details. Additionally,
             Student average, total marks and average is displayed. The student list is further sorted according to the
-            highest average mark to the lowest average mark. Moreover, user gets a option to download the report
+            highest average mark to the lowest average mark. Moreover, user gets  option to download the report
          */
         System.out.println("\n--- Full Report of the  Module Evaluator ---\n");
 
@@ -890,7 +907,7 @@ public class StudentManagementSystemIII {
         }
 
         //Display full report
-        System.out.printf("%-18s %-25s %-20s %-20s %-22s %-19s %-23s %-22s\n","Student ID", "Student Name", "Marks M1", "Marks M2", "Marks M3", "Total", "Average", "Grade");
+        System.out.printf("%-18s %-25s %-20s %-20s %-22s %-19s %-23s %-22s\n","Student ID", "Student Name", "Marks M1", "Marks M2", "Marks M3", "Total", "Average", "Grade"); // Format String
         System.out.printf("%-18s %-25s %-20s %-20s %-22s %-19s %-23s %-22s\n","----------", "------------", "--------", "--------", "--------", "-----", "-------", "-----");
         for(Student student: stModule_evaluator) {
             if (!student.getStName().equals("-")) {
@@ -910,7 +927,7 @@ public class StudentManagementSystemIII {
             File file = new File(fileName);
 
             try{
-                PrintWriter fileWriter = new PrintWriter(file);
+                PrintWriter fileWriter = new PrintWriter(file); //Use PrintWriter except of FileWriter since file writer cannot add formated strings to the file but printWriter does
                 fileWriter.printf("%-18s %-25s %-20s %-20s %-22s %-19s %-23s %-22s\n","Student ID", "Student Name", "Marks M1", "Marks M2", "Marks M3", "Total", "Average", "Grade");
                 fileWriter.printf("%-18s %-25s %-20s %-20s %-22s %-19s %-23s %-22s\n","----------", "------------", "--------", "--------", "--------", "-----", "-------", "-----");
 
